@@ -1,9 +1,697 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-    <title>My GitHub Page</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vedant Kawade | AI/ML Enthusiast</title>
+  <link rel="icon" type="image/jpg" href="images/favicon.jpg">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "Roboto", sans-serif;
+      background: transparent;
+      color: #e0e0e0;
+    }
+
+    #neural-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -2;
+      background: #121212;
+    }
+
+    header {
+      width: 100%;
+      position: fixed;
+      top: 0;
+      background: rgba(0, 0, 0, 0.7);
+      padding: 1rem 0;
+      z-index: 1000;
+    }
+
+    nav {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    nav .logo {
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: #2196F3;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+    }
+
+    nav ul li {
+      margin-left: 2rem;
+    }
+
+    nav ul li a {
+      color: #e0e0e0;
+      font-size: 1rem;
+      transition: color 0.3s;
+    }
+
+    nav ul li a:hover {
+      color: #2196F3;
+    }
+
+    .hero {
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 0 1rem;
+      position: relative;
+    }
+
+    .hero-content {
+      max-width: 800px;
+      z-index: 1;
+    }
+
+    .hero h1 {
+      font-size: 3.5rem;
+      margin-bottom: 1rem;
+      text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+    }
+
+    .hero p {
+      font-size: 1.5rem;
+      margin-bottom: 2rem;
+      text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.7);
+    }
+
+    .btn {
+      background: #2196F3;
+      color: #fff;
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 5px;
+      font-size: 1rem;
+      transition: background 0.3s, transform 0.3s;
+    }
+
+    .btn:hover {
+      background: #1976D2;
+      transform: scale(1.05);
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 4rem 1rem;
+    }
+
+    section {
+      padding: 4rem 0;
+    }
+
+    section h2 {
+      text-align: center;
+      font-size: 2.5rem;
+      margin-bottom: 2rem;
+      position: relative;
+    }
+
+    section h2::after {
+      content: "";
+      width: 80px;
+      height: 4px;
+      background: #2196F3;
+      display: block;
+      margin: 0.5rem auto 0;
+      border-radius: 2px;
+    }
+
+    .project-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+    }
+
+    .project-card {
+      background: #1e1e1e;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .project-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.7);
+    }
+
+    .project-card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+
+    .project-info {
+      padding: 1rem;
+    }
+
+    .project-info h3 {
+      margin-bottom: 0.5rem;
+      font-size: 1.5rem;
+      color: #2196F3;
+    }
+
+    .project-info p {
+      font-size: 0.95rem;
+      color: #ccc;
+    }
+
+    .achievements-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .achievement-card {
+      background: #1e1e1e;
+      padding: 1rem;
+      border-radius: 10px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .achievement-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.7);
+    }
+
+    .achievement-card h3 {
+      margin-bottom: 0.5rem;
+      color: #2196F3;
+    }
+
+    .achievement-card p {
+      color: #ccc;
+      font-size: 0.95rem;
+    }
+
+    .skills-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1rem;
+    }
+
+    .skill {
+      padding: 0.75rem 1.5rem;
+      border: 2px solid #2196F3;
+      border-radius: 30px;
+      font-size: 1.2rem;
+      color: #e0e0e0;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .skill::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: rgba(33, 150, 243, 0.2);
+      transform: skewX(-20deg);
+      transition: left 0.5s ease;
+    }
+
+    .skill:hover::before {
+      left: 100%;
+    }
+
+    .social-links a img {
+      width: 40px;
+      transition: transform 0.3s ease;
+    }
+
+    .social-links a:hover img {
+      transform: scale(1.2);
+    }
+
+    .skill:hover {
+      transform: scale(1.05);
+      background: rgba(33, 150, 243, 0.1);
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    form label {
+      margin: 0.5rem 0 0.2rem;
+    }
+
+    form input,
+    form textarea {
+      padding: 0.75rem;
+      border: none;
+      border-radius: 5px;
+      margin-bottom: 1rem;
+      background: #2e2e2e;
+      color: #e0e0e0;
+    }
+
+    form button {
+      background: #2196F3;
+      color: #fff;
+      border: none;
+      padding: 0.75rem;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.3s;
+    }
+
+    form button:hover {
+      background: #1976D2;
+      transform: scale(1.05);
+    }
+
+    .paragraph {
+      display: grid;
+      place-items: center;
+      height: 10vh;
+    }
+
+    .project-card {
+      display: block;
+      text-decoration: none;
+      color: inherit;
+    }
+
+
+    footer {
+      background: #1e1e1e;
+      padding: 2rem 1rem;
+      text-align: center;
+    }
+
+    footer p {
+      margin-bottom: 1rem;
+    }
+
+    footer .social-links a {
+      margin: 0 0.5rem;
+      color: #2196F3;
+      font-size: 1.2rem;
+      transition: transform 0.3s;
+    }
+
+    footer .social-links a:hover {
+      transform: scale(1.2);
+    }
+
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 2.5rem;
+      }
+
+      .hero p {
+        font-size: 1.2rem;
+      }
+    }
+  </style>
 </head>
+
 <body>
-    <h1>Welcome to my website!</h1>
+  <canvas id="neural-canvas"></canvas>
+  <header>
+    <nav>
+      <div class="logo" data-aos="fade-down">🧑🏻‍💻Vedant Kawade</div>
+      <ul>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#achievements">Achievements</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#Vision">Vision</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+  <section id="home" class="hero" data-aos="fade-up">
+    <div class="hero-content">
+      <h1>Hi, I'm Vedant Kawade</h1>
+      <p id="typewriter"></p>
+      <a href="#projects" class="btn">Explore My Work</a>
+    </div>
+  </section>
+  <section id="about" data-aos="zoom-in">
+    <div class="container">
+      <h2>About Me</h2>
+      <div class="paragraph">
+        <p>I am an innovative problem-solver with a deep passion for AI and RL(Reinforcement Learning).
+          As an engineering student and aspiring AI entrepreneur, I am constantly exploring ways to leverage
+          artificial intelligence to solve real-world problems. While I am at a beginner level, I am committed to
+          continuous learning and expanding my expertise in these technologies.</p>
+      </div>
+    </div>
+  </section>
+  <section id="projects" data-aos="flip-left">
+    <div class="container">
+      <h2>Projects</h2>
+      <div class="paragraph">
+        <p>I have worked on projects such as face tracking using OpenCV, which I have shared on GitHub.
+          Additionally, I have contributed to the tech community by creating tutorials on rooting the
+          Lenovo TB-X306X and virtual RAM expansion on that rooted Lenovo TB-X306X having Android 10, also uploaded that
+          method in <b><a href="https://xdaforums.com/t/root-tb-x306x.4263277/">XDA forum</a></b>.</p>
+      </div>
+      <div class="project-grid">
+        <a href="https://github.com/VedantKawade3/face-detection" class="project-card">
+          <img src="images/face.png" alt="Project 1" />
+          <div class="project-info">
+            <h3>Face Tracking</h3>
+            <p> </p>
+          </div>
+        </a>
+        <a href="https://github.com/VedantKawade3/Rooting-of-lenovo_TB-X306X" class="project-card">
+          <img src="images/project2.jpg" alt="Project 2" />
+          <div class="project-info">
+            <h3>Rooting of lenovo tb-x306x</h3>
+            <p></p>
+          </div>
+        </a>
+        <a href="https://github.com/VedantKawade3/Creating-Virtual-RAM-Using-Termux" class="project-card">
+          <img src="images/project3.jpg" alt="Project 3" />
+          <div class="project-info">
+            <h3>Virtual ram</h3>
+            <p>creating virtual ram in rooted lenovo tb-x306x</p>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+  <section id="achievements" data-aos="flip-right">
+    <div class="container">
+      <h2>Achievements</h2>
+      <div class="achievements-grid">
+        <div class="achievement-card">
+          <h3>Freelancing</h3>
+          <p>comming soon...</p>
+        </div>
+        <div class="achievement-card">
+          <h3>achievements 1</h3>
+          <p>comming soon...</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section id="skills" data-aos="fade-right">
+    <div class="container">
+      <h2>Skills</h2>
+      <div class="paragraph">
+        <p>I have little experience working with Python, NumPy, Pandas, and little bit Flask, with a focus on AI
+          development.</p>
+      </div>
+      <div class="skills-grid">
+        <div class="skill">Python</div>
+        <div class="skill">Numpy</div>
+        <div class="skill">Pandas</div>
+        <div class="skill">opencv</div>
+        <div class="skill">flask</div>
+        <div class="skill">basics of c++</div>
+      </div>
+    </div>
+  </section>
+  <section id="Vision" data-aos="zoom-in">
+    <div class="container">
+      <h2>My Vision</h2>
+      <div class="paragraph">
+        <p>I envision creating an AI system using deep learning and reinforcement learning that goes beyond traditional
+          capabilities.
+          My goal is to develop an algorithm or method that can introduce feelings and consciousness into AI, pushing
+          the
+          boundaries
+          of what artificial intelligence can achieve.</p>
+      </div>
+      <div class="paragraph">
+        <p>
+          I have a deep-thinking mindset that allows me to explore topics thoroughly and develop futuristic, innovative
+          solutions.
+          My approach to problem-solving is driven by curiosity, creativity, and a vision for the future.</p>
+      </div>
+    </div>
+  </section>
+  <section id="contact" data-aos="slide-up">
+    <div class="container">
+      <h2>Contact Me</h2>
+      <form action="mailto:your.email@example.com" method="post" enctype="text/plain">
+        <label for="name">Name</label>
+        <input type="text" id="name" name="name" required />
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" required />
+        <label for="message">Message</label>
+        <textarea id="message" name="message" rows="4" required></textarea>
+        <button type="submit" class="btn">Send Message</button>
+      </form>
+    </div>
+  </section>
+  <footer data-aos="fade-up">
+    <div class="container">
+      <p>&copy; 2025 Vedant Kawade. All rights reserved.</p>
+      <div class="social-links">
+        <a href="https://github.com/VedantKawade3/" target="_blank">
+          <img
+            src="https://user-images.githubusercontent.com/74038190/212257468-1e9a91f1-b626-4baa-b15d-5c385dfa7ed2.gif"
+            alt="GitHub" />
+        </a>
+        <a href="https://www.linkedin.com/in/vedant-kawade-09501b278/" target="_blank">
+          <img
+            src="https://user-images.githubusercontent.com/74038190/235294012-0a55e343-37ad-4b0f-924f-c8431d9d2483.gif"
+            alt="LinkedIn" />
+        </a>
+        <a href="https://x.com/Vedant_Kawade07" target="_blank">
+          <img
+            src="https://private-user-images.githubusercontent.com/74038190/241765460-cc4fe88c-7f7a-41d8-b449-34b7a178c1c6.gif?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDExMDgzNzEsIm5iZiI6MTc0MTEwODA3MSwicGF0aCI6Ii83NDAzODE5MC8yNDE3NjU0NjAtY2M0ZmU4OGMtN2Y3YS00MWQ4LWI0NDktMzRiN2ExNzhjMWM2LmdpZj9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTAzMDQlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwMzA0VDE3MDc1MVomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTljNWFkZDdlOWI5NWZiOTgxNmRlOTA1MGNkYzJiYWVmZjBmMTAwMzcwNDBkZmJlM2EzZTg5MjQwNDdlYzRhNjcmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.coikGdL0awzqXXnBn7kJtDhS4oS_Pc5zmSeVkYhPaVA"
+            alt="Twitter" />
+        </a>
+      </div>
+    </div>
+  </footer>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+  <script>
+    AOS.init({ duration: 1000, easing: "ease-in-out", once: true });
+
+    const typewriterElement = document.getElementById("typewriter");
+    const phrases = ["AI Enthusiast", "Problem-Solver", "Tech Explorer", "College Student"];
+    let phraseIndex = 0, charIndex = 0, currentPhrase = "";
+    function type() {
+      if (phraseIndex < phrases.length) {
+        if (charIndex < phrases[phraseIndex].length) {
+          currentPhrase += phrases[phraseIndex].charAt(charIndex);
+          typewriterElement.textContent = currentPhrase;
+          charIndex++;
+          setTimeout(type, 150);
+        } else {
+          setTimeout(erase, 2000);
+        }
+      } else {
+        phraseIndex = 0;
+        setTimeout(type, 150);
+      }
+    }
+    function erase() {
+      if (charIndex > 0) {
+        currentPhrase = currentPhrase.substring(0, currentPhrase.length - 1);
+        typewriterElement.textContent = currentPhrase;
+        charIndex--;
+        setTimeout(erase, 100);
+      } else {
+        phraseIndex = (phraseIndex + 1) % phrases.length;
+        setTimeout(type, 500);
+      }
+    }
+    setTimeout(type, 1000);
+
+    const canvas = document.getElementById("neural-canvas");
+    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setClearColor(0x121212, 1);
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    camera.position.z = 150;
+
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.3);
+    scene.add(ambientLight);
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+    directionalLight.position.set(100, 100, 100);
+    scene.add(directionalLight);
+
+    const neurons = [];
+    const connections = [];
+
+    class Neuron {
+      constructor(x, y, z) {
+        this.x = x; this.y = y; this.z = z;
+
+        this.radius = Math.random() * 0.6 + 0.3;
+        this.targetOpacity = 0.7;
+        this.currentOpacity = 0;
+        this.growthRate = 0.005;
+        const geometry = new THREE.SphereGeometry(this.radius, 16, 16);
+        const material = new THREE.MeshPhongMaterial({
+          color: 0x2196F3,
+          emissive: 0x2196F3,
+          emissiveIntensity: 0.5,
+          transparent: true,
+          opacity: 0
+        });
+        this.mesh = new THREE.Mesh(geometry, material);
+        this.mesh.position.set(x, y, z);
+        scene.add(this.mesh);
+      }
+      update() {
+        if (this.currentOpacity < this.targetOpacity) {
+          this.currentOpacity += this.growthRate;
+          if (this.currentOpacity > this.targetOpacity) this.currentOpacity = this.targetOpacity;
+          this.mesh.material.opacity = this.currentOpacity;
+        }
+      }
+    }
+
+    class Connection {
+      constructor(neuronA, neuronB) {
+        this.a = neuronA; this.b = neuronB;
+        this.targetOpacity = 0.2;
+        this.currentOpacity = 0;
+        this.growthRate = 0.002;
+        const geometry = new THREE.BufferGeometry().setFromPoints([
+          new THREE.Vector3(neuronA.x, neuronA.y, neuronA.z),
+          new THREE.Vector3(neuronB.x, neuronB.y, neuronB.z)
+        ]);
+        const material = new THREE.LineBasicMaterial({ color: 0xe0e0e0, transparent: true, opacity: 0 });
+        this.line = new THREE.Line(geometry, material);
+        scene.add(this.line);
+      }
+      update() {
+        if (this.currentOpacity < this.targetOpacity) {
+          this.currentOpacity += this.growthRate;
+          if (this.currentOpacity > this.targetOpacity) this.currentOpacity = this.targetOpacity;
+          this.line.material.opacity = this.currentOpacity;
+        }
+      }
+    }
+
+    function addNeuron() {
+      const range = 100;
+      const x = Math.random() * range * 2 - range;
+      const y = Math.random() * range * 2 - range;
+      const z = Math.random() * range * 2 - range;
+      const neuron = new Neuron(x, y, z);
+      neurons.push(neuron);
+      const threshold = 40;
+      neurons.forEach(other => {
+        if (other !== neuron) {
+          const dx = neuron.x - other.x;
+          const dy = neuron.y - other.y;
+          const dz = neuron.z - other.z;
+          const distance = Math.sqrt(dx * dx + dy * dy + dz * dz);
+          if (distance < threshold) {
+            const connection = new Connection(neuron, other);
+            connections.push(connection);
+          }
+        }
+      });
+      if (neurons.length > 100) {
+        const removed = neurons.shift();
+        scene.remove(removed.mesh);
+        for (let i = connections.length - 1; i >= 0; i--) {
+          if (connections[i].a === removed || connections[i].b === removed) {
+            scene.remove(connections[i].line);
+            connections.splice(i, 1);
+          }
+        }
+      }
+    }
+
+    function animate() {
+      requestAnimationFrame(animate);
+      neurons.forEach(neuron => neuron.update());
+      connections.forEach(connection => connection.update());
+
+      scene.rotation.y += 0.001;
+
+      renderer.render(scene, camera);
+    }
+    animate();
+
+    function simulateReinforcement() {
+      if (neurons.length === 0) return;
+      const randomIndex = Math.floor(Math.random() * neurons.length);
+      const neuron = neurons[randomIndex];
+      neuron.targetOpacity = Math.min(neuron.targetOpacity + 0.1, 1);
+      connections.forEach(connection => {
+        if (connection.a === neuron || connection.b === neuron) {
+          connection.targetOpacity = Math.min(connection.targetOpacity + 0.05, 0.5);
+        }
+      });
+    }
+    setInterval(addNeuron, 500);
+    setInterval(simulateReinforcement, 3000);
+
+    canvas.addEventListener("click", () => {
+      neurons.forEach(neuron => { neuron.targetOpacity = 1; });
+      connections.forEach(connection => { connection.targetOpacity = 0.5; });
+      setTimeout(() => {
+        neurons.forEach(neuron => { neuron.targetOpacity = 0.7; });
+        connections.forEach(connection => { connection.targetOpacity = 0.2; });
+      }, 1000);
+    });
+
+    window.addEventListener("scroll", () => {
+      const scrollY = window.scrollY;
+
+      scene.rotation.x = scrollY * 0.0005;
+
+      ambientLight.intensity = 0.3 + Math.min(scrollY * 0.00005, 0.7);
+    });
+
+    window.addEventListener("resize", () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener("click", function (e) {
+        e.preventDefault();
+        document.querySelector(this.getAttribute("href")).scrollIntoView({ behavior: "smooth" });
+      });
+    });
+  </script>
 </body>
+
 </html>
