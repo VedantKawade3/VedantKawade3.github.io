@@ -165,9 +165,13 @@
 
     .project-card img {
       width: 100%;
-      height: 200px;
-      object-fit: cover;
+      height: auto;
+      aspect-ratio: 16 / 9;   /* keeps cards consistent */
+      object-fit: contain;    /* letterbox instead of crop */
+      background: #111;       /* subtle bars for non-16:9 images */
+      display: block;
     }
+
 
     .project-info {
       padding: 1rem;
